@@ -1,0 +1,30 @@
+/* Barra del idioma */
+.language-bar {
+  background-color: #1278c2; /* Azul de fondo */
+  color: #ffffff; /* Texto blanco */
+  padding: 5px 0; /* Espaciado vertical más pequeño */
+  top: 0;
+  width: 100%;
+  z-index: 1030; /* Encima de otros elementos */
+  text-align: center; /* Centra el contenido */
+}
+
+/* Enlaces */
+.language-switch {
+  color: #ffffff; /* Texto blanco */
+  text-decoration: none; /* Quita el subrayado */
+  font-size: 0.9rem; /* Tamaño del texto ligeramente más pequeño */
+  font-weight: 500; /* Texto un poco menos grueso */
+  padding: 3px 8px; /* Espaciado interno más compacto */
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out; /* Transición suave */
+}
+
+.language-switch:hover {
+  background-color: #0a5b92; /* Fondo más oscuro al pasar el mouse */
+  border-radius: 4px; /* Bordes ligeramente redondeados */
+}
+
+/* Espaciado entre los enlaces */
+.language-switch + .language-switch {
+  margin-left: 5px; /* Espacio reducido entre los botones */
+}

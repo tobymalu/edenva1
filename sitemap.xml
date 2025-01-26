@@ -1,57 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+          http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
+  <!-- Página principal -->
+  <url>
+    <loc>https://edenva.mx/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://edenva.mx/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://edenva.mx/en/" />
+    <lastmod>2025-01-14T19:17:51+00:00</lastmod>
+    <priority>1.00</priority>
+  </url>
 
+  <!-- Tours -->
+  <url>
+    <loc>https://edenva.mx/tours/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://edenva.mx/tours/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://edenva.mx/en/tours/" />
+    <lastmod>2025-01-14T19:17:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
 
-<url>
-  <loc>https://edenva.mx/</loc>
-  <lastmod>2025-01-14T19:17:51+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-<url>
-  <loc>https://edenva.mx/tours/</loc>
-  <lastmod>2025-01-14T19:17:51+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://edenva.mx/contacto/</loc>
-  <lastmod>2025-01-14T19:17:51+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://edenva.mx/Blog/</loc>
-  <lastmod>2025-01-14T19:17:51+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://edenva.mx/tours/Tirolesa/</loc>
-  <lastmod>2025-01-14T19:17:51+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://edenva.mx/tours/PaseEdenva/</loc>
-  <lastmod>2025-01-14T19:17:51+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://edenva.mx/Blog/Restaurante/</loc>
-  <lastmod>2025-01-14T19:17:51+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://edenva.mx/Blog/Instalaciones/</loc>
-  <lastmod>2025-01-14T19:17:51+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://edenva.mx/Blog/FAQ/</loc>
-  <lastmod>2025-01-20T19:17:51+00:00</lastmod>
-  <priority>0.60</priority>
-</url>
+  <!-- Contacto -->
+  <url>
+    <loc>https://edenva.mx/contacto/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://edenva.mx/contacto/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://edenva.mx/en/contact/" />
+    <lastmod>2025-01-14T19:17:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
 
+  <!-- Blog -->
+  <url>
+    <loc>https://edenva.mx/Blog/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://edenva.mx/Blog/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://edenva.mx/en/Blog/" />
+    <lastmod>2025-01-14T19:17:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Tirolesa -->
+  <url>
+    <loc>https://edenva.mx/tours/Tirolesa/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://edenva.mx/tours/Tirolesa/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://edenva.mx/en/tours/Zipline/" />
+    <lastmod>2025-01-14T19:17:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Pase Edenva -->
+  <url>
+    <loc>https://edenva.mx/tours/PaseEdenva/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://edenva.mx/tours/PaseEdenva/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://edenva.mx/en/tours/EdenvaPass/" />
+    <lastmod>2025-01-14T19:17:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Restaurante -->
+  <url>
+    <loc>https://edenva.mx/Blog/Restaurante/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://edenva.mx/Blog/Restaurante/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://edenva.mx/en/Blog/Restaurant/" />
+    <lastmod>2025-01-14T19:17:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Instalaciones -->
+  <url>
+    <loc>https://edenva.mx/Blog/Instalaciones/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://edenva.mx/Blog/Instalaciones/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://edenva.mx/en/Blog/Facilities/" />
+    <lastmod>2025-01-14T19:17:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+
+  <!-- FAQ -->
+  <url>
+    <loc>https://edenva.mx/Blog/FAQ/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://edenva.mx/Blog/FAQ/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://edenva.mx/en/Blog/FAQ/" />
+    <lastmod>2025-01-20T19:17:51+00:00</lastmod>
+    <priority>0.60</priority>
+  </url>
 
 </urlset>
