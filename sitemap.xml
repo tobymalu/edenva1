@@ -11,7 +11,7 @@
     <loc>https://edenva.mx/</loc>
     <xhtml:link rel="alternate" hreflang="es" href="https://edenva.mx/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://edenva.mx/en/" />
-    <lastmod>2025-01-14T19:17:51+00:00</lastmod>
+    <lastmod>2025-02-27T19:15:51+00:00</lastmod>
     <priority>1.00</priority>
   </url>
 
@@ -20,7 +20,7 @@
     <loc>https://edenva.mx/tours/</loc>
     <xhtml:link rel="alternate" hreflang="es" href="https://edenva.mx/tours/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://edenva.mx/en/tours/" />
-    <lastmod>2025-01-14T19:17:51+00:00</lastmod>
+    <lastmod>2025-02-27T19:15:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
 
@@ -46,17 +46,17 @@
   <url>
     <loc>https://edenva.mx/tours/Tirolesa/</loc>
     <xhtml:link rel="alternate" hreflang="es" href="https://edenva.mx/tours/Tirolesa/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://edenva.mx/en/tours/Zipline/" />
-    <lastmod>2025-01-14T19:17:51+00:00</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://edenva.mx/en/tours/canopy/" />
+    <lastmod>2025-02-27T19:15:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
 
   <!-- Pase Edenva -->
   <url>
     <loc>https://edenva.mx/tours/PaseEdenva/</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://edenva.mx/tours/PaseEdenva/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://edenva.mx/tours/PaseParqueEdenva/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://edenva.mx/en/tours/EdenvaPass/" />
-    <lastmod>2025-01-14T19:17:51+00:00</lastmod>
+    <lastmod>2025-02-27T19:15:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
 
