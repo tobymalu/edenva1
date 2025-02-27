@@ -1,0 +1,31 @@
+.btn-reserva {
+  background-color: #d2691e;
+  color: #fff;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+}
+
+.btn-reserva:hover {
+  background-color: #b85e1a;
+}
+
+/* Botón flotante */
+.btn-flotante {
+  background-color: #153a57;
+  color: #fff;
+  font-size: 16px;
+  padding: 12px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.btn-flotante:hover {
+  background-color: #102b40;
+}

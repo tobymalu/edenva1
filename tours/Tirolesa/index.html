@@ -85,6 +85,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="/tours/Tirolesa/style.css" />
+    <link rel="stylesheet" href="/btn/style.css" />
   </head>
   <body class="nunito-sans">
     <!-- Google Tag Manager (noscript) -->
@@ -99,7 +100,9 @@
     <!-- End Google Tag Manager (noscript) -->
     <div class="language-bar">
       <a href="#" class="language-switch mx-2" data-lang="es">Español</a>
-      <a href="#" class="language-switch mx-2" data-lang="en">English</a>
+      <a href="/en/tours/canopy/" class="language-switch mx-2" data-lang="en"
+        >English</a
+      >
     </div>
     <nav class="navbar navbar-expand-lg bg-custom-blue">
       <div class="container-fluid">
@@ -175,6 +178,12 @@
         </div>
       </div>
     </nav>
+    <a
+      class="btn btn-flotante"
+      href="https://fareharbor.com/embeds/book/edenva/items/613718/?full-items=yes&flow=1348941"
+      onclick="return !(window.FH && FH.open({ shortname: 'edenva', fallback: 'simple', fullItems: 'yes', flow: 1348941, view: { item: 613718 } }));"
+      >¡Reservar ahora!</a
+    >
 
     <h1>Edenva Tirolesa</h1>
     <div class="todo">
@@ -281,43 +290,13 @@
       </div>
     </div>
     <div class="btnfirst">
-      <script
-        type="text/javascript"
-        src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=db5321a5-1360-4502-b1c3-32d4b4a7aa21"
-        async
-      ></script>
-      <style>
-        #bokun_85c01871_0de0_48d2_93c8_9dcdad74b088 {
-          display: inline-block;
-          padding: 10px 20px;
-          background: #d2691e;
-          border-radius: 5px;
-          box-shadow: none;
-          font-weight: 600;
-          font-size: 16px;
-          text-decoration: none;
-          text-align: center;
-          color: #ffffff;
-          border: none;
-          cursor: pointer;
-          transition: background 0.2s ease;
-        }
-        #bokun_85c01871_0de0_48d2_93c8_9dcdad74b088:hover {
-          background: #8f4814;
-        }
-        #bokun_85c01871_0de0_48d2_93c8_9dcdad74b088:active {
-          background: #a55318;
-        }
-      </style>
-      <button
-        class="bokunButton"
-        disabled
-        id="bokun_85c01871_0de0_48d2_93c8_9dcdad74b088"
-        data-src="https://widgets.bokun.io/online-sales/db5321a5-1360-4502-b1c3-32d4b4a7aa21/experience/938337?partialView=1"
-        data-testid="widget-book-button"
+      <!-- FareHarbor book button for item #613718 -->
+      <a
+        class="btn btn-reserva"
+        href="https://fareharbor.com/embeds/book/edenva/items/613718/?full-items=yes&flow=1348941"
+        onclick="return !(window.FH && FH.open({ shortname: 'edenva', fallback: 'simple', fullItems: 'yes', flow: 1348941, view: { item: 613718 } }));"
+        >¡Reservar ahora!</a
       >
-        ¡Reserva Ahora!
-      </button>
     </div>
 
     <div class="tour-desc">
@@ -365,43 +344,12 @@
         notificarse con al menos 24 horas de anticipación.
       </p>
       <div class="btnfirst">
-        <script
-          type="text/javascript"
-          src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=db5321a5-1360-4502-b1c3-32d4b4a7aa21"
-          async
-        ></script>
-        <style>
-          #bokun_85c01871_0de0_48d2_93c8_9dcdad74b088 {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #d2691e;
-            border-radius: 5px;
-            box-shadow: none;
-            font-weight: 600;
-            font-size: 16px;
-            text-decoration: none;
-            text-align: center;
-            color: #ffffff;
-            border: none;
-            cursor: pointer;
-            transition: background 0.2s ease;
-          }
-          #bokun_85c01871_0de0_48d2_93c8_9dcdad74b088:hover {
-            background: #8f4814;
-          }
-          #bokun_85c01871_0de0_48d2_93c8_9dcdad74b088:active {
-            background: #a55318;
-          }
-        </style>
-        <button
-          class="bokunButton"
-          disabled
-          id="bokun_85c01871_0de0_48d2_93c8_9dcdad74b088"
-          data-src="https://widgets.bokun.io/online-sales/db5321a5-1360-4502-b1c3-32d4b4a7aa21/experience/938337?partialView=1"
-          data-testid="widget-book-button"
+        <a
+          class="btn btn-reserva"
+          href="https://fareharbor.com/embeds/book/edenva/items/613718/?full-items=yes&flow=1348941"
+          onclick="return !(window.FH && FH.open({ shortname: 'edenva', fallback: 'simple', fullItems: 'yes', flow: 1348941, view: { item: 613718 } }));"
+          >¡Reservar ahora!</a
         >
-          Reserva Ahora!
-        </button>
       </div>
     </div>
     <div class="container tres">
@@ -538,6 +486,8 @@
       crossorigin="anonymous"
     ></script>
     <script src="/tours/Tirolesa/script.js"></script>
-    <script src="/lengua/type.js"></script>
+
+    <!-- FareHarbor Lightframe API - do not remove - see: https://fareharbor.com/help/website/resources/lightframe-api/ -->
+    <script src="https://fareharbor.com/embeds/api/v1/?autolightframe=yes"></script>
   </body>
 </html>

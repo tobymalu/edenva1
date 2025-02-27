@@ -88,6 +88,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <link rel="stylesheet" href="/btn/style.css" />
   </head>
   <body class="nunito-sans">
     <!-- Google Tag Manager (noscript) -->
@@ -178,6 +179,13 @@
         </div>
       </div>
     </nav>
+    <!-- FareHarbor book button -->
+    <a
+      class="btn btn-flotante"
+      href="https://fareharbor.com/embeds/book/edenva/?full-items=yes"
+      onclick="return !(window.FH && FH.open({ shortname: 'edenva', fallback: 'simple', fullItems: 'yes', view: 'items' }));"
+      >¡Reservar ahora!</a
+    >
     <div class="card-hero-container">
       <div class="card-hero">
         <h1>Choose Your Next Adventure at Edenva</h1>
@@ -310,5 +318,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="/lengua/type.js"></script>
+    <!-- FareHarbor Lightframe API - do not remove - see: https://fareharbor.com/help/website/resources/lightframe-api/ -->
+    <script src="https://fareharbor.com/embeds/api/v1/?autolightframe=yes"></script>
   </body>
 </html>
