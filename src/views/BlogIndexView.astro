@@ -1,0 +1,71 @@
+---
+import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import PageHero from "@/components/PageHero.astro";
+import BlogCard from "@/components/BlogCard.astro";
+import { BLOG_SLUGS } from "@/data/slugMaps";
+import { useTranslations, useRoutes, type Lang } from "@/i18n/utils";
+import blogHero from "@/assets/site/feature-restaurante.jpg";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const routes = useRoutes(lang);
+
+const allPosts = await getCollection("blog", (entry) => entry.data.lang === lang);
+const posts = allPosts.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+
+const ogImage = await getImage({ src: blogHero, width: 1200, height: 630 });
+
+const meta =
+  lang === "es"
+    ? {
+        title: "Blog | Edenva - Descubre lo Mejor de Puerto Vallarta",
+        description:
+          "Explora el blog de Edenva para descubrir historias, consejos y noticias sobre aventuras, naturaleza y todo lo que Puerto Vallarta tiene para ofrecer.",
+      }
+    : {
+        title: "Blog | Edenva - Discover the Best of Puerto Vallarta",
+        description:
+          "Explore the Edenva blog for stories, tips and news about adventure, nature and everything Puerto Vallarta has to offer.",
+      };
+---
+
+<BaseLayout
+  lang={lang}
+  title={meta.title}
+  description={meta.description}
+  canonicalPath={routes.blog}
+  ogImage={ogImage.src}
+  alternates={{ es: "/blog/", en: "/en/blog/" }}
+  langSwitchHref={lang === "es" ? "/en/blog/" : "/blog/"}
+  activeKey="blog"
+>
+  <Breadcrumbs lang={lang} trail={[{ label: t("nav.blog"), href: routes.blog }]} />
+
+  <PageHero
+    image={blogHero}
+    eyebrow={lang === "es" ? "Historias y guías" : "Stories & guides"}
+    title={t("blog.pageTitle")}
+    lead={t("blog.pageIntro")}
+  />
+
+  <section class="mx-auto grid max-w-6xl gap-6 px-4 py-14 sm:grid-cols-2 sm:px-6 sm:py-20">
+    {
+      posts.map((post) => (
+        <BlogCard
+          lang={lang}
+          href={`${routes.blog}${BLOG_SLUGS[post.id.split("/")[0]][lang]}/`}
+          titulo={post.data.titulo}
+          resumen={post.data.resumen}
+          cover={post.data.cover}
+          categoria={post.data.categoria}
+        />
+      ))
+    }
+  </section>
+</BaseLayout>

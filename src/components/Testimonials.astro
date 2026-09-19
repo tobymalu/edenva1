@@ -1,0 +1,27 @@
+---
+import ReviewCard from "@/components/ReviewCard.astro";
+import type { Testimonial } from "@/data/testimonials";
+import { SOCIAL } from "@/consts";
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  items: Testimonial[];
+  moreLabel: string;
+}
+const { eyebrow, title, items, moreLabel } = Astro.props;
+const tones = ["jungle", "sand", "river"] as const;
+---
+
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
+  <div class="reveal max-w-2xl">
+    <p class="eyebrow">{eyebrow}</p>
+    <h2 class="display-lg mt-2 text-forest">{title}</h2>
+  </div>
+  <div class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+    {items.map((it, i) => <ReviewCard text={it.text} author={it.author} tone={tones[i % 3]} class={i === 1 ? "lg:mt-8" : ""} />)}
+  </div>
+  <p class="mt-8">
+    <a href={SOCIAL.tripadvisor} target="_blank" rel="noopener noreferrer" class="font-bold text-forest underline underline-offset-4 hover:text-accent">{moreLabel} →</a>
+  </p>
+</section>

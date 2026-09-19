@@ -1,0 +1,94 @@
+---
+import "@/styles/global.css";
+import Seo from "@/components/Seo.astro";
+import Analytics from "@/components/Analytics.astro";
+import GtmNoscript from "@/components/GtmNoscript.astro";
+import MetaPixel from "@/components/MetaPixel.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import CookieBanner from "@/components/CookieBanner.astro";
+import Reveal from "@/components/Reveal.astro";
+import StickyBookBar from "@/components/StickyBookBar.astro";
+import type { Lang } from "@/i18n/ui";
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  canonicalPath: string;
+  ogImage?: string;
+  noindex?: boolean;
+  alternates?: Partial<Record<Lang, string>>;
+  langSwitchHref: string;
+  activeKey?: "home" | "tours" | "about" | "blog" | "faq" | "contact";
+  /** oculta la barra flotante de reserva (ej. en páginas legales) */
+  hideStickyBook?: boolean;
+  stickyItemId?: string;
+  stickyFlow?: string;
+  /** JSON-LD extra de la página (Organization, TouristAttraction, etc.) */
+  jsonLd?: object | object[];
+}
+
+const {
+  lang,
+  title,
+  description,
+  canonicalPath,
+  ogImage,
+  noindex,
+  alternates,
+  langSwitchHref,
+  activeKey,
+  hideStickyBook = false,
+  stickyItemId,
+  stickyFlow,
+  jsonLd,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+
+    <Seo
+      lang={lang}
+      title={title}
+      description={description}
+      canonicalPath={canonicalPath}
+      ogImage={ogImage}
+      noindex={noindex}
+      alternates={alternates}
+    />
+
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />}
+
+    <Analytics />
+    <MetaPixel />
+  </head>
+  <body class="flex min-h-screen flex-col font-body">
+    <GtmNoscript />
+    <Nav lang={lang} langSwitchHref={langSwitchHref} activeKey={activeKey} />
+
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <Footer lang={lang} />
+    <Reveal />
+    <CookieBanner lang={lang} />
+    {!hideStickyBook && <StickyBookBar lang={lang} itemId={stickyItemId} flow={stickyFlow} />}
+  </body>
+</html>

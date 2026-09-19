@@ -1,0 +1,66 @@
+---
+import { SITE_URL, SITE_NAME } from "@/consts";
+import type { Lang } from "@/i18n/ui";
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  canonicalPath: string; // ej. "/tours/tirolesa/"
+  ogImage?: string; // URL absoluta
+  noindex?: boolean;
+  /** rutas equivalentes por idioma, para hreflang. Si falta una, se omite. */
+  alternates?: Partial<Record<Lang, string>>;
+}
+
+const {
+  lang,
+  title,
+  description,
+  canonicalPath,
+  ogImage,
+  noindex = false,
+  alternates,
+} = Astro.props;
+
+const canonical = new URL(canonicalPath, SITE_URL).toString();
+const defaultOgImage = new URL("/og-default.jpg", SITE_URL).toString();
+const resolvedOgImage = ogImage ?? defaultOgImage;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta
+  name="robots"
+  content={noindex
+    ? "noindex, nofollow"
+    : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"}
+/>
+
+{
+  alternates &&
+    (Object.entries(alternates) as [Lang, string][]).map(([altLang, path]) => (
+      <link
+        rel="alternate"
+        hreflang={altLang}
+        href={new URL(path, SITE_URL).toString()}
+      />
+    ))
+}
+
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={resolvedOgImage} />
+<meta property="og:image:secure_url" content={resolvedOgImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content={lang === "es" ? "es_MX" : "en_US"} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={resolvedOgImage} />

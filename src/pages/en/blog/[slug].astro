@@ -1,0 +1,18 @@
+---
+import { getEntry } from "astro:content";
+import BlogDetailView from "@/views/BlogDetailView.astro";
+import { BLOG_SLUGS } from "@/data/slugMaps";
+
+export async function getStaticPaths() {
+  return Object.entries(BLOG_SLUGS).map(([folder, byLang]) => ({
+    params: { slug: byLang.en },
+    props: { folder },
+  }));
+}
+
+const { folder } = Astro.props as { folder: keyof typeof BLOG_SLUGS };
+const entry = await getEntry("blog", `${folder}/en`);
+if (!entry) throw new Error(`Missing blog entry: ${folder}/en`);
+---
+
+<BlogDetailView lang="en" entry={entry} folder={folder} />

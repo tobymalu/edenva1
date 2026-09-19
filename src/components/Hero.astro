@@ -1,0 +1,54 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import BookingCTA from "@/components/BookingCTA.astro";
+import { useTranslations, type Lang } from "@/i18n/utils";
+
+interface Props {
+  lang: Lang;
+  image: ImageMetadata;
+  alt: string;
+  title: string;
+  sub: string;
+  exploreLabel: string;
+  exploreHref: string;
+  chips: { icon: string; label: string }[];
+}
+const { lang, image, alt, title, sub, exploreLabel, exploreHref, chips } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="relative isolate flex min-h-[calc(100svh-3.5rem)] items-end overflow-hidden bg-forest text-white">
+  <Image
+    src={image}
+    alt={alt}
+    widths={[480, 800, 1200, 1600, 2000]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="absolute inset-x-0 top-0 -z-10 h-[68%] w-full object-cover object-[55%_50%] lg:inset-0 lg:h-full"
+  />
+  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest from-30% via-forest/30 via-60% to-transparent lg:from-forest/70 lg:from-0% lg:via-transparent lg:to-forest/10"></div>
+
+  <div class="mx-auto w-full max-w-7xl px-4 pb-12 pt-24 sm:px-6 sm:pb-24">
+   <div class="lg:ml-auto lg:w-[45%]">
+    <h1 class="display-xl [text-wrap:balance]">{title}</h1>
+    <p class="mt-5 max-w-xl text-lg font-semibold text-white/95 sm:text-xl">{sub}</p>
+
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <BookingCTA label={t("cta.bookAdventure")} />
+      <a href={exploreHref} class="btn btn-ghost">{exploreLabel}</a>
+    </div>
+
+    <ul class="mt-8 flex flex-wrap gap-2 text-sm font-bold">
+      {
+        chips.map((c) => (
+          <li class="rounded-full bg-black/35 px-3 py-1.5 backdrop-blur-[2px]">
+            <span aria-hidden="true">{c.icon}</span> {c.label}
+          </li>
+        ))
+      }
+    </ul>
+   </div>
+  </div>
+</section>

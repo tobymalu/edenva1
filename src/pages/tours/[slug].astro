@@ -1,0 +1,18 @@
+---
+import { getEntry } from "astro:content";
+import TourDetailView from "@/views/TourDetailView.astro";
+import { TOUR_SLUGS } from "@/data/slugMaps";
+
+export async function getStaticPaths() {
+  return Object.entries(TOUR_SLUGS).map(([folder, byLang]) => ({
+    params: { slug: byLang.es },
+    props: { folder },
+  }));
+}
+
+const { folder } = Astro.props as { folder: keyof typeof TOUR_SLUGS };
+const entry = await getEntry("tours", `${folder}/es`);
+if (!entry) throw new Error(`Missing tour entry: ${folder}/es`);
+---
+
+<TourDetailView lang="es" entry={entry} folder={folder} />

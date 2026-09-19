@@ -1,0 +1,27 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { BLOG_CATEGORY_LABELS } from "@/content/blogCategories";
+import type { Lang } from "@/i18n/ui";
+
+interface Props {
+  lang: Lang;
+  href: string;
+  titulo: string;
+  resumen: string;
+  cover: ImageMetadata;
+  categoria: "parque" | "gastronomia";
+}
+const { lang, href, titulo, resumen, cover, categoria } = Astro.props;
+---
+
+<a href={href} class="zoom-hover group block overflow-hidden rounded-[var(--radius-card)] bg-surface shadow-card transition hover:-translate-y-1">
+  <Image src={cover} alt={titulo} width={600} height={400} class="h-56 w-full object-cover" />
+  <div class="p-6">
+    <span class="eyebrow">
+      {BLOG_CATEGORY_LABELS[categoria][lang]}
+    </span>
+    <h3 class="mt-1 text-2xl font-extrabold uppercase text-forest">{titulo}</h3>
+    <p class="mt-1 text-sm text-muted-foreground">{resumen}</p>
+  </div>
+</a>

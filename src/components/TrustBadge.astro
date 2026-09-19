@@ -1,0 +1,24 @@
+---
+import { useTranslations, type Lang } from "@/i18n/utils";
+
+interface Props {
+  lang: Lang;
+  /** Solo aplica a flujos donde de verdad se puede reservar y cancelar gratis.
+   * Ocúltalo (variant="waitlist") en flujos tipo lista de espera. */
+  variant?: "cancellation" | "waitlist";
+}
+const { lang, variant = "cancellation" } = Astro.props;
+const t = useTranslations(lang);
+---
+
+{
+  variant === "cancellation" ? (
+    <p class="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+      <span aria-hidden="true">✅</span> {t("trust.freeCancellation")}
+    </p>
+  ) : (
+    <p class="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+      <span aria-hidden="true">⏳</span> {t("trust.waitlist")}
+    </p>
+  )
+}

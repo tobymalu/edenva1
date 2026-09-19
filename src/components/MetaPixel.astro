@@ -1,0 +1,45 @@
+---
+import { META_PIXEL_ID } from "@/consts";
+---
+
+{/* El SDK de Meta no tiene un "consent mode" nativo como el de Google, así
+   que aquí lo controlamos a mano: la función queda cargada, pero el
+   init + PageView solo se disparan si ya hay consentimiento guardado.
+   CookieBanner llama a la misma función al aceptar, sin duplicar el track
+   gracias al guard `if (f.fbq) return`. */}
+<script define:vars={{ META_PIXEL_ID }} is:inline>
+  !(function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = "2.0";
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s);
+  })(
+    window,
+    document,
+    "script",
+    "https://connect.facebook.net/en_US/fbevents.js"
+  );
+
+  window.edenvaStartMetaPixel = function () {
+    fbq("init", META_PIXEL_ID);
+    fbq("track", "PageView");
+  };
+
+  var storedConsent = null;
+  try {
+    storedConsent = localStorage.getItem("edenva-cookie-consent");
+  } catch (e) {}
+  if (storedConsent === "granted") {
+    window.edenvaStartMetaPixel();
+  }
+</script>

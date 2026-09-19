@@ -1,0 +1,60 @@
+---
+import BookingCTA from "@/components/BookingCTA.astro";
+import { CONTACT } from "@/consts";
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  path: string[];
+  info: { label: string; value: string }[];
+  maps: string;
+  whatsapp: string;
+  bookLabel: string;
+}
+const { eyebrow, title, lead, path, info, maps, whatsapp, bookLabel } = Astro.props;
+const mapsHref = "https://www.google.com/maps/search/?api=1&query=Edenva+Parque+Ecoturistico+Mismaloya";
+---
+
+<section class="bg-sand/60 px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-7xl">
+    <div class="reveal max-w-2xl">
+      <p class="eyebrow">{eyebrow}</p>
+      <h2 class="display-lg mt-2 text-forest">{title}</h2>
+      <p class="mt-4 text-lg text-muted-foreground">{lead}</p>
+    </div>
+
+    <!-- Ruta: vertical en móvil, horizontal en escritorio -->
+    <ol class="reveal relative mt-12 flex flex-col gap-8 lg:flex-row lg:justify-between lg:gap-0">
+      <span aria-hidden="true" class="absolute bottom-3 left-[11px] top-3 border-l-4 border-dashed border-earth/50 lg:bottom-auto lg:left-3 lg:right-3 lg:top-[11px] lg:border-l-0 lg:border-t-4"></span>
+      {
+        path.map((stop, i) => {
+          const isEdenva = i === 2;
+          return (
+            <li class="relative flex items-center gap-4 lg:flex-col lg:items-start lg:gap-3">
+              <span class:list={["relative z-10 block h-6 w-6 shrink-0 rounded-full border-4 border-cream", isEdenva ? "scale-150 bg-accent" : "bg-forest"]}></span>
+              <span class:list={["font-display font-extrabold uppercase", isEdenva ? "text-2xl text-accent" : "text-xl text-forest"]}>{stop}</span>
+            </li>
+          );
+        })
+      }
+    </ol>
+
+    <dl class="mt-12 grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        info.map((row) => (
+          <div class="reveal border-t-2 border-forest/20 pt-3">
+            <dt class="eyebrow !text-earth">{row.label}</dt>
+            <dd class="mt-1 font-semibold">{row.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+      <BookingCTA label={bookLabel} />
+      <a href={mapsHref} target="_blank" rel="noopener noreferrer" class="btn btn-outline">{maps}</a>
+      <a href={CONTACT.whatsappHref} target="_blank" rel="noopener noreferrer" class="btn btn-outline">{whatsapp}</a>
+    </div>
+  </div>
+</section>

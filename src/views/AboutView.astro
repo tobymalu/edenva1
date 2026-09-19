@@ -1,0 +1,63 @@
+---
+import { getImage } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import BookingCTA from "@/components/BookingCTA.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import { useTranslations, useRoutes, type Lang } from "@/i18n/utils";
+import heroTodos from "@/assets/site/hero-todos.jpg";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const routes = useRoutes(lang);
+const ogImage = await getImage({ src: heroTodos, width: 1200, height: 630 });
+
+const copy =
+  lang === "es"
+    ? {
+        title: "Nosotros | Edenva Parque Ecológico",
+        description: "Conoce la historia de Edenva, un parque ecológico familiar en la sierra de Mismaloya, Puerto Vallarta.",
+        p1: "Edenva nació como un proyecto familiar en la sierra de Mismaloya, en la zona donde se filmó la película Depredador. Desde entonces, hemos crecido cuidando lo que nos rodea: el río, la selva y las montañas que hacen posible cada tirolesa y cada sendero.",
+        p2: "Nuestro equipo de guías vive en la región y conoce el terreno de memoria — por eso cada recorrido combina adrenalina con seguridad real, no solo un discurso de bienvenida.",
+        p3: "Trabajamos con equipo certificado, mantenimiento constante de nuestras líneas de canopy y protocolos de primeros auxilios. Fuera del canopy, promovemos la conservación de la flora y fauna local: no permitimos mascotas dentro del parque para proteger a la fauna silvestre, y cuidamos las zonas del río donde se puede nadar.",
+      }
+    : {
+        title: "About Us | Edenva Ecological Park",
+        description: "Learn the story behind Edenva, a family-run ecological park in the Mismaloya mountains, Puerto Vallarta.",
+        p1: "Edenva started as a family project in the Sierra de Mismaloya, in the area where the movie Predator was filmed. Since then we've grown while taking care of what surrounds us: the river, the jungle and the mountains that make every zipline and every trail possible.",
+        p2: "Our guides live in the region and know the terrain by heart — that's why every tour combines real adrenaline with real safety, not just a welcome speech.",
+        p3: "We work with certified equipment, ongoing maintenance of our canopy lines, and first-aid protocols. Beyond the canopy, we promote conservation of local flora and fauna: pets aren't allowed inside the park to protect wildlife, and we look after the river areas where swimming is allowed.",
+      };
+---
+
+<BaseLayout
+  lang={lang}
+  title={copy.title}
+  description={copy.description}
+  canonicalPath={routes.about}
+  ogImage={ogImage.src}
+  alternates={{ es: "/nosotros/", en: "/en/about/" }}
+  langSwitchHref={lang === "es" ? "/en/about/" : "/nosotros/"}
+  activeKey="about"
+>
+  <Breadcrumbs lang={lang} trail={[{ label: t("nav.about"), href: routes.about }]} />
+
+  <PageHero
+    image={heroTodos}
+    alt="Edenva"
+    eyebrow={lang === "es" ? "Nuestra historia" : "Our story"}
+    title={t("about.pageTitle")}
+  />
+
+  <article class="mx-auto max-w-3xl px-4 py-14 sm:py-20">
+    <div class="prose prose-edenva max-w-none text-lg">
+      <p class="!text-2xl !font-semibold !leading-snug text-forest">{copy.p1}</p>
+      <p>{copy.p2}</p>
+      <p>{copy.p3}</p>
+    </div>
+    <BookingCTA label={t("cta.bookAdventure")} class="mt-10" />
+  </article>
+</BaseLayout>

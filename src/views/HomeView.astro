@@ -1,0 +1,270 @@
+---
+import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Hero from "@/components/Hero.astro";
+import ExperienceSection from "@/components/ExperienceSection.astro";
+import AdventureCard from "@/components/AdventureCard.astro";
+import BookingCTA from "@/components/BookingCTA.astro";
+import StoryStrip from "@/components/StoryStrip.astro";
+import SafetySection from "@/components/SafetySection.astro";
+import FamilySection from "@/components/FamilySection.astro";
+import Testimonials from "@/components/Testimonials.astro";
+import LocationSection from "@/components/LocationSection.astro";
+import FinalCTA from "@/components/FinalCTA.astro";
+import PartnerLogos from "@/components/PartnerLogos.astro";
+import { TESTIMONIALS } from "@/data/testimonials";
+import { HOME } from "@/data/home";
+import { TOUR_SLUGS } from "@/data/slugMaps";
+import { CONTACT, SOCIAL, SITE_URL } from "@/consts";
+import { useTranslations, useRoutes, type Lang } from "@/i18n/utils";
+
+import heroCanopy from "@/assets/site/hero-canopy.jpg";
+import heroAventura from "@/assets/site/hero-aventura.jpg";
+import heroEntrada from "@/assets/site/hero-entrada.jpg";
+import heroTodos from "@/assets/site/hero-todos.jpg";
+import featureCanopy from "@/assets/site/feature-canopy.jpg";
+import featureRio from "@/assets/site/feature-rio.jpg";
+import featureRestaurante from "@/assets/site/feature-restaurante.jpg";
+import puente from "@/assets/site/puente.jpg";
+import rioCta from "@/assets/site/rio-cta.jpg";
+import columpios from "@/content/tours/pase-parque/01-columpios.jpg";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const routes = useRoutes(lang);
+const c = HOME[lang];
+const es = lang === "es";
+
+const tours = await getCollection("tours", (entry) => entry.data.lang === lang);
+const tour = (folder: string) => tours.find((x) => x.id.startsWith(`${folder}/`))!;
+const zipTour = tour("tirolesa");
+const parkTour = tour("pase-parque");
+
+const money = (n: number, cur: string) =>
+  `$${new Intl.NumberFormat(es ? "es-MX" : "en-US").format(n)} ${cur}`;
+// Por convención de los .md: [0] = adulto, [1] = niño
+const price = (x: typeof zipTour, i: number) => {
+  const p = x.data.precios[i];
+  return p ? money(p.precio, p.moneda) : "";
+};
+
+const zipHref = `${routes.tours}${TOUR_SLUGS["tirolesa"][lang]}/`;
+const parkHref = `${routes.tours}${TOUR_SLUGS["pase-parque"][lang]}/`;
+
+const ogImage = await getImage({ src: heroCanopy, width: 1200, height: 630 });
+
+const tileImg: Record<string, { image: typeof heroCanopy; alt: string; cls: string; pos?: string }> = {
+  zip: { image: heroAventura, alt: es ? "Visitante en tirolesa junto a una cascada" : "Guest ziplining beside a waterfall", cls: "col-span-2 aspect-[4/3] md:col-span-3 md:row-span-2 md:aspect-auto md:min-h-[520px]" },
+  trails: { image: puente, alt: es ? "Grupo cruzando un puente de madera sobre el río" : "Group crossing a wooden bridge over the river", cls: "aspect-square md:col-span-3 md:aspect-[16/10]" },
+  river: { image: featureRio, alt: es ? "Personas disfrutando el río en Edenva" : "People enjoying the river at Edenva", cls: "aspect-square md:col-span-3 md:aspect-[16/10]" },
+  pools: { image: rioCta, alt: es ? "Poza natural de agua cristalina" : "Crystal-clear natural pool", cls: "aspect-[3/4] md:col-span-2" },
+  relax: { image: columpios, alt: es ? "Dos amigas en columpios sobre el río" : "Two friends on swings over the river", cls: "aspect-[3/4] md:col-span-2 md:mt-8", pos: "45% 50%" },
+  food: { image: featureRestaurante, alt: es ? "Mesa con platillos en el restaurante del parque" : "Table of dishes at the park restaurant", cls: "col-span-2 aspect-[4/3] md:col-span-2 md:aspect-[3/4]" },
+};
+const tiles = c.exp.tiles.map((x) => ({ ...x, ...tileImg[x.key] }));
+
+const storyImgs = [
+  { image: heroEntrada, pos: "40% 50%" },
+  { image: heroAventura, pos: "50% 40%" },
+  { image: featureRio, pos: "60% 50%" },
+  { image: puente, pos: "45% 50%" },
+  { image: heroTodos, pos: "50% 40%" },
+];
+const panels = c.story.words.map((word, i) => ({ word, alt: c.story.alts[i], ...storyImgs[i] }));
+
+const title = es
+  ? "Edenva | Parque Ecológico y Canopy en Puerto Vallarta"
+  : "Edenva | Ecological Park & Canopy Adventure in Puerto Vallarta";
+const description = es
+  ? "Descubre Edenva, el parque ecológico en las montañas de Vallarta. Vive la aventura con canopy, senderismo, restaurante y más. ¡Reserva tu experiencia al aire libre!"
+  : "Discover Edenva, the ecological park in Vallarta's mountains. Experience the adventure with canopy, hiking, dining and more. Book your outdoor experience today!";
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
+    name: "Edenva",
+    url: SITE_URL,
+    logo: `${SITE_URL}/favicon/web-app-manifest-512x512.png`,
+    email: CONTACT.email,
+    telephone: CONTACT.phone,
+    sameAs: [SOCIAL.facebook, SOCIAL.instagram, SOCIAL.youtube, SOCIAL.tripadvisor],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": ["TouristAttraction", "LocalBusiness"],
+    "@id": `${SITE_URL}/#attraction`,
+    name: "Edenva",
+    description: c.schemaDescription,
+    url: SITE_URL + routes.home,
+    image: ogImage.src.startsWith("http") ? ogImage.src : SITE_URL + ogImage.src,
+    telephone: CONTACT.phone,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Mismaloya, Puerto Vallarta",
+      addressRegion: "Jalisco",
+      addressCountry: "MX",
+    },
+    geo: { "@type": "GeoCoordinates", latitude: 20.5223619, longitude: -105.2607011 },
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      opens: "09:00",
+      closes: "17:00",
+    },
+    publicAccess: true,
+    isAccessibleForFree: false,
+    parentOrganization: { "@id": `${SITE_URL}/#organization` },
+  },
+];
+---
+
+<BaseLayout
+  lang={lang}
+  title={title}
+  description={description}
+  canonicalPath={routes.home}
+  ogImage={ogImage.src}
+  alternates={{ es: "/", en: "/en/" }}
+  langSwitchHref={lang === "es" ? "/en/" : "/"}
+  activeKey="home"
+  jsonLd={jsonLd}
+>
+  <!-- 01 HOOK -->
+  <Hero
+    lang={lang}
+    image={heroCanopy}
+    alt={es ? "Dos personas en tirolesa sobre la selva de la Sierra Madre" : "Two people ziplining over the Sierra Madre jungle"}
+    title={c.hero.title}
+    sub={c.hero.sub}
+    exploreLabel={c.hero.explore}
+    exploreHref="#experiencias"
+    chips={c.hero.chips}
+  />
+
+  <!-- 02 DISCOVERY: qué vas a vivir -->
+  <ExperienceSection id="experiencias" eyebrow={c.exp.eyebrow} title={c.exp.title} lead={c.exp.lead} tiles={tiles} />
+
+  <!-- 03 EMOTION: tirolesa -->
+  <AdventureCard
+    dark
+    eyebrow={c.zip.eyebrow}
+    title={c.zip.title}
+    lead={c.zip.lead}
+    image={featureCanopy}
+    alt={es ? "Guía y visitante en tirolesa sobre la selva" : "Guide and guest ziplining above the jungle"}
+    imagePos="55% 50%"
+  >
+    <dl class="mt-8 grid grid-cols-2 gap-x-6 gap-y-5">
+      {
+        c.zip.facts.map((f) => (
+          <div class="border-l-4 border-accent-glow pl-4">
+            <dt class="font-display text-3xl font-extrabold leading-none">{f.big}</dt>
+            <dd class="mt-1 text-sm font-semibold text-white/85">{f.small}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <p class="mt-8 font-display text-lg font-bold">
+      {c.zip.from} <span class="text-accent-glow">{price(zipTour, 0)}</span>
+    </p>
+    <div class="mt-4 flex flex-col gap-3 sm:flex-row">
+      <BookingCTA label={c.zip.cta} itemId={zipTour.data.fareharborItemId} flow={zipTour.data.fareharborFlow} />
+      <a href={zipHref} class="btn btn-ghost">{c.zip.details}</a>
+    </div>
+  </AdventureCard>
+
+  <!-- 04 cambio de ritmo: naturaleza -->
+  <AdventureCard
+    reverse
+    eyebrow={c.park.eyebrow}
+    title={c.park.title}
+    lead={c.park.lead}
+    image={rioCta}
+    alt={es ? "Mano extendida sobre el agua cristalina de una poza" : "Hand reaching over the clear water of a natural pool"}
+    imagePos="50% 60%"
+    image2={featureRio}
+    alt2={es ? "Río en Edenva" : "The river at Edenva"}
+  >
+    <ul class="mt-6 grid gap-2 font-semibold sm:grid-cols-2">
+      {c.park.bullets.map((b) => <li class="flex items-center gap-2"><span aria-hidden="true" class="h-2.5 w-2.5 rounded-full bg-leaf"></span>{b}</li>)}
+    </ul>
+    <p class="mt-8 font-display text-lg font-bold text-forest">
+      {c.park.from} <span class="text-accent">{price(parkTour, 0)}</span>
+    </p>
+    <div class="mt-4">
+      <a href={parkHref} class="btn btn-outline">{c.park.cta}</a>
+    </div>
+  </AdventureCard>
+
+  <!-- 05 storytelling -->
+  <StoryStrip panels={panels} />
+
+  <!-- 06 TRUST -->
+  <SafetySection eyebrow={c.safety.eyebrow} title={c.safety.title} lead={c.safety.lead} items={c.safety.items} />
+
+  <!-- 07 familia -->
+  <FamilySection
+    eyebrow={c.family.eyebrow}
+    title={c.family.title}
+    lead={c.family.lead}
+    note={c.family.note}
+    ask={c.family.ask}
+    cards={[
+      {
+        title: c.family.zipTitle,
+        badge: c.family.zipAge,
+        text: c.family.zipText,
+        kidLabel: c.family.kid,
+        kidPrice: price(zipTour, 1),
+        href: zipHref,
+        image: heroTodos,
+        alt: es ? "Grupo con casco y equipo de tirolesa, incluido un niño" : "Group in helmets and zipline gear, including a kid",
+      },
+      {
+        title: c.family.parkTitle,
+        text: c.family.parkText,
+        kidLabel: c.family.kid,
+        kidPrice: price(parkTour, 1),
+        href: parkHref,
+        image: columpios,
+        alt: es ? "Columpios de cuerda junto al río" : "Rope swings beside the river",
+      },
+    ]}
+  />
+
+  <!-- 08 reseñas -->
+  <Testimonials
+    eyebrow={c.stories.eyebrow}
+    title={c.stories.title}
+    items={TESTIMONIALS[lang]}
+    moreLabel={es ? "Más reseñas en TripAdvisor" : "More reviews on TripAdvisor"}
+  />
+
+  <!-- 09 cómo llegar + reservar -->
+  <LocationSection
+    eyebrow={c.loc.eyebrow}
+    title={c.loc.title}
+    lead={c.loc.lead}
+    path={c.loc.path}
+    info={c.loc.info}
+    maps={c.loc.maps}
+    whatsapp={c.loc.whatsapp}
+    bookLabel={t("cta.bookAdventure")}
+  />
+
+  <FinalCTA
+    image={featureRio}
+    alt={es ? "Río y palapas de Edenva rodeados de selva" : "Edenva's river and palapas surrounded by jungle"}
+    title={c.final.title}
+    text={c.final.text}
+    label={t("cta.bookAdventure")}
+  />
+
+  <PartnerLogos lang={lang} />
+</BaseLayout>

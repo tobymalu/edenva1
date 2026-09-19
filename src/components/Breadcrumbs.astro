@@ -1,0 +1,49 @@
+---
+import { SITE_URL } from "@/consts";
+import { useTranslations, useRoutes, type Lang } from "@/i18n/utils";
+
+interface Crumb {
+  label: string;
+  href: string;
+}
+interface Props {
+  lang: Lang;
+  /** sin incluir "Inicio", que se agrega automático */
+  trail: Crumb[];
+}
+const { lang, trail } = Astro.props;
+const t = useTranslations(lang);
+const routes = useRoutes(lang);
+
+const items = [{ label: t("breadcrumb.home"), href: routes.home }, ...trail];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((item, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: item.label,
+    item: new URL(item.href, SITE_URL).toString(),
+  })),
+};
+---
+
+<nav aria-label="Breadcrumb" class="mx-auto max-w-7xl px-4 py-3 text-sm font-semibold text-muted-foreground sm:px-6">
+  <ol class="flex flex-wrap items-center gap-1">
+    {
+      items.map((item, i) => (
+        <li class="flex items-center gap-1">
+          {i > 0 && <span aria-hidden="true">/</span>}
+          {i === items.length - 1 ? (
+            <span aria-current="page" class="text-foreground">{item.label}</span>
+          ) : (
+            <a href={item.href} class="hover:underline">{item.label}</a>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />

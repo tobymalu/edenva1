@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "edenva",
+  "compatibility_date": "2025-01-01",
+  // Sitio 100% estático (output: "static" en astro.config.mjs) — sin esto
+  // explícito, el sistema nuevo de "Workers Builds" de Cloudflare Pages
+  // auto-detecta el framework e intenta armar SSR con bindings que no
+  // existen, y el build truena.
+  "assets": {
+    "directory": "./dist"
+  }
+}

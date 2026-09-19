@@ -1,0 +1,28 @@
+/*
+  EDENVA — design tokens.
+  ÚNICO archivo con valores literales de color, tipografía y forma.
+  Para re-tematizar el sitio, edita solo aquí.
+*/
+:root {
+  /* Paleta inspirada en la sierra de Vallarta */
+  --color-jungle: #2f6b3f; /* verde selva */
+  --color-forest: #163a2a; /* verde bosque profundo: header, footer, secciones oscuras */
+  --color-leaf: #6da541; /* verde hoja tropical */
+  --color-river: #2b8a94; /* azul agua del río */
+  --color-sand: #eadcc0; /* arena cálida */
+  --color-earth: #8a6a4a; /* piedra / tierra */
+  --color-cream: #f8f3e8; /* fondo general */
+  --color-dark: #1d211c; /* carbón */
+  --color-accent: #c9531a; /* naranja casco de guía: CTAs (blanco encima ≥ 4.5:1) */
+  --color-accent-deep: #a44012;
+  --color-accent-glow: #f08a4b; /* solo para detalles sobre fondos oscuros */
+
+  /* Tipografía */
+  --font-display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+  --font-body: "Nunito Sans", system-ui, sans-serif;
+
+  /* Forma */
+  --radius-card: 1.5rem;
+  --radius-blob: 42% 58% 55% 45% / 48% 42% 58% 52%;
+  --shadow-card: 0 10px 30px -12px rgb(22 58 42 / 0.35);
+}

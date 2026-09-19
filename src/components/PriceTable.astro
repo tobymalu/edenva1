@@ -1,0 +1,52 @@
+---
+import { useTranslations, type Lang } from "@/i18n/utils";
+
+interface PriceTier {
+  etiqueta: string;
+  precio: number;
+  moneda: "MXN" | "USD";
+  nota?: string;
+  tipo: "estandar" | "addon";
+}
+
+interface Props {
+  lang: Lang;
+  precios: PriceTier[];
+  duracionHoras: number;
+  tipoTour: string;
+}
+const { lang, precios, duracionHoras, tipoTour } = Astro.props;
+const t = useTranslations(lang);
+
+const formatMoney = (value: number, currency: string) =>
+  new Intl.NumberFormat(lang === "es" ? "es-MX" : "en-US", {
+    style: "currency",
+    currency,
+    maximumFractionDigits: 0,
+  }).format(value);
+---
+
+<div>
+  <p class="eyebrow">{t("price.title")}</p>
+  <ul class="mt-2 space-y-1">
+    {
+      precios.map((tier) => (
+        <li class="flex items-baseline justify-between gap-3 border-b border-border pb-1">
+          <span class="font-semibold">{tier.etiqueta}</span>
+          <span class="font-display text-2xl font-extrabold text-accent">{formatMoney(tier.precio, tier.moneda)}</span>
+          {tier.nota && <span class="block text-xs text-muted-foreground">{tier.nota}</span>}
+        </li>
+      ))
+    }
+  </ul>
+  <dl class="mt-4 grid grid-cols-2 gap-3 text-sm">
+    <div>
+      <dt class="eyebrow !text-earth">{t("price.duration")}</dt>
+      <dd class="mt-0.5 font-semibold">{duracionHoras} {t("price.hours")}</dd>
+    </div>
+    <div>
+      <dt class="eyebrow !text-earth">{t("price.type")}</dt>
+      <dd class="mt-0.5 font-semibold">{tipoTour}</dd>
+    </div>
+  </dl>
+</div>

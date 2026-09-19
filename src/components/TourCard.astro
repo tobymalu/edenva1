@@ -1,0 +1,31 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { useTranslations, type Lang } from "@/i18n/utils";
+
+interface Props {
+  lang: Lang;
+  href: string;
+  nombre: string;
+  descripcion: string;
+  cover: ImageMetadata;
+  /** precio ya formateado, ej. "$1,400 MXN" */
+  price?: string;
+}
+const { lang, href, nombre, descripcion, cover, price } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<a href={href} class="zoom-hover group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] bg-surface shadow-card transition hover:-translate-y-1">
+  <div class="aspect-[4/3] overflow-hidden">
+    <Image src={cover} alt={nombre} widths={[400, 700, 1000]} sizes="(min-width: 640px) 50vw, 100vw" loading="lazy" class="h-full w-full object-cover" />
+  </div>
+  <div class="flex flex-1 flex-col p-6">
+    <h3 class="text-2xl font-extrabold uppercase text-forest">{nombre}</h3>
+    <p class="mt-2 flex-1 text-muted-foreground">{descripcion}</p>
+    <p class="mt-5 flex items-center justify-between font-display font-bold">
+      {price ? <span class="text-lg text-accent">{lang === "es" ? "Desde" : "From"} {price}</span> : <span></span>}
+      <span class="text-forest group-hover:underline">{t("cta.learnMore")} →</span>
+    </p>
+  </div>
+</a>

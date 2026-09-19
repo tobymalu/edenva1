@@ -1,0 +1,107 @@
+---
+import { getImage } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import PartnerLogos from "@/components/PartnerLogos.astro";
+import { CONTACT, GOOGLE_MAPS_EMBED } from "@/consts";
+import { useTranslations, useRoutes, type Lang } from "@/i18n/utils";
+import puente from "@/assets/site/puente.jpg";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const routes = useRoutes(lang);
+
+const ogImage = await getImage({ src: puente, width: 1200, height: 630 });
+
+const meta =
+  lang === "es"
+    ? {
+        title: "Contacto | Edenva Parque Ecológico en Puerto Vallarta",
+        description:
+          "¿Tienes dudas o deseas reservar tu próxima aventura? Contáctanos y descubre cómo llegar a Edenva, un parque ecológico único en Puerto Vallarta.",
+      }
+    : {
+        title: "Contact | Edenva Ecological Park in Puerto Vallarta",
+        description:
+          "Have questions or want to book your next adventure? Contact us and find out how to get to Edenva, a unique ecological park in Puerto Vallarta.",
+      };
+---
+
+<BaseLayout
+  lang={lang}
+  title={meta.title}
+  description={meta.description}
+  canonicalPath={routes.contact}
+  ogImage={ogImage.src}
+  alternates={{ es: "/contacto/", en: "/en/contact/" }}
+  langSwitchHref={lang === "es" ? "/en/contact/" : "/contacto/"}
+  activeKey="contact"
+>
+  <Breadcrumbs lang={lang} trail={[{ label: t("nav.contact"), href: routes.contact }]} />
+
+  <PageHero
+    image={puente}
+    alt="Edenva"
+    eyebrow={lang === "es" ? "Hablemos" : "Let's talk"}
+    title={t("contact.pageTitle")}
+  />
+
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 sm:py-20 md:grid-cols-2">
+    <div>
+      <form
+        action="https://formspree.io/f/meooqedk"
+        method="POST"
+        class="space-y-4 rounded-[var(--radius-card)] bg-surface p-6 shadow-card"
+      >
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+
+        <div>
+          <label for="name" class="block text-sm font-semibold">{t("contact.form.name")}</label>
+          <input id="name" name="name" type="text" required class="mt-1 w-full rounded-2xl border-2 border-border bg-cream px-4 py-3" />
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-semibold">{t("contact.form.email")}</label>
+          <input id="email" name="email" type="email" required class="mt-1 w-full rounded-2xl border-2 border-border bg-cream px-4 py-3" />
+        </div>
+        <div>
+          <label for="message" class="block text-sm font-semibold">{t("contact.form.message")}</label>
+          <textarea id="message" name="message" rows="4" required class="mt-1 w-full rounded-2xl border-2 border-border bg-cream px-4 py-3" />
+        </div>
+        <button type="submit" class="btn btn-primary w-full">
+          {t("cta.send")}
+        </button>
+      </form>
+
+      <div class="mt-4 flex gap-3">
+        <a href={CONTACT.phoneHref} class="btn btn-outline flex-1">
+          📞 {t("cta.call")}
+        </a>
+        <a href={CONTACT.whatsappHref} target="_blank" rel="noopener noreferrer" class="btn btn-outline flex-1">
+          💬 {t("cta.whatsapp")}
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="text-3xl font-extrabold uppercase text-forest">{t("contact.locationTitle")}</h2>
+      <p class="mt-2 text-foreground">{t("contact.locationText")}</p>
+      <div class="photo-organic mt-4 shadow-card">
+        <iframe
+          src={GOOGLE_MAPS_EMBED}
+          width="100%"
+          height="400"
+          style="border:0"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Edenva - Google Maps"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <PartnerLogos lang={lang} />
+</BaseLayout>

@@ -1,0 +1,87 @@
+---
+import { Image } from "astro:assets";
+import logo from "@/assets/site/logo.png";
+import BookingCTA from "@/components/BookingCTA.astro";
+import { useTranslations, useRoutes, type Lang } from "@/i18n/utils";
+
+interface Props {
+  lang: Lang;
+  /** ruta equivalente en el otro idioma para esta misma página */
+  langSwitchHref: string;
+  activeKey?: "home" | "tours" | "about" | "blog" | "faq" | "contact";
+}
+const { lang, langSwitchHref, activeKey } = Astro.props;
+const t = useTranslations(lang);
+const routes = useRoutes(lang);
+
+const links = [
+  { key: "tours", href: routes.tours, label: t("nav.tours") },
+  { key: "about", href: routes.about, label: t("nav.about") },
+  { key: "blog", href: routes.blog, label: t("nav.blog") },
+  { key: "faq", href: routes.faq, label: t("nav.faq") },
+  { key: "contact", href: routes.contact, label: t("nav.contact") },
+] as const;
+---
+
+<header class="sticky top-0 z-50 bg-forest text-white shadow-[0_2px_18px_-6px_rgb(0_0_0/0.5)]">
+  <div class="mx-auto flex max-w-7xl items-center gap-3 px-4 py-2 sm:px-6">
+    <a href={routes.home} class="mr-auto flex items-center gap-2 font-display text-xl font-extrabold uppercase tracking-wide">
+      <Image src={logo} alt="" width={40} height={40} class="rounded-full bg-white" />
+      Edenva
+    </a>
+
+    <nav id="nav-menu" aria-label="Principal" class="hidden w-full order-last lg:order-none lg:block lg:w-auto">
+      <ul class="flex flex-col gap-1 pb-3 lg:flex-row lg:items-center lg:gap-1 lg:pb-0">
+        {
+          links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                aria-current={activeKey === link.key ? "page" : undefined}
+                class:list={[
+                  "block rounded-full px-4 py-2 text-sm font-semibold hover:bg-white/10",
+                  activeKey === link.key && "bg-white/15",
+                ]}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a
+            href={langSwitchHref}
+            hreflang={lang === "es" ? "en" : "es"}
+            class="block rounded-full px-4 py-2 text-sm font-semibold text-sand hover:bg-white/10"
+          >
+            {t("lang.switchTo")}
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <BookingCTA label={t("cta.bookAdventure")} shortLabel={t("cta.bookShort")} class="!min-h-11 !px-4 !py-2 !text-xs sm:!px-6 sm:!text-sm" />
+
+    <button
+      id="nav-toggle"
+      type="button"
+      class="rounded-full p-2 hover:bg-white/10 lg:hidden"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+      aria-label="Menu"
+    >
+      <span class="block h-0.5 w-6 bg-white"></span>
+      <span class="mt-1.5 block h-0.5 w-6 bg-white"></span>
+      <span class="mt-1.5 block h-0.5 w-6 bg-white"></span>
+    </button>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById("nav-toggle");
+  const menu = document.getElementById("nav-menu");
+  toggle?.addEventListener("click", () => {
+    const isHidden = menu?.classList.toggle("hidden");
+    toggle.setAttribute("aria-expanded", String(!isHidden));
+  });
+</script>

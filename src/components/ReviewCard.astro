@@ -1,0 +1,22 @@
+---
+interface Props {
+  text: string;
+  author: string;
+  tone?: "sand" | "jungle" | "river";
+  class?: string;
+}
+const { text, author, tone = "sand", class: className } = Astro.props;
+const tones = {
+  sand: "bg-sand text-dark",
+  jungle: "bg-jungle text-white",
+  river: "bg-river text-white",
+};
+---
+
+<figure class:list={["reveal flex flex-col justify-between rounded-[var(--radius-card)] p-7 sm:p-8", tones[tone], className]}>
+  <blockquote class="font-semibold leading-relaxed">
+    <span aria-hidden="true" class="block font-display text-6xl leading-none opacity-40">“</span>
+    {text}
+  </blockquote>
+  <figcaption class="mt-5 font-display text-sm font-bold uppercase tracking-widest opacity-80">— {author}</figcaption>
+</figure>

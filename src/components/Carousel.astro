@@ -1,0 +1,79 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  images: ImageMetadata[];
+  alts: string[];
+  id: string;
+}
+const { images, alts, id } = Astro.props;
+---
+
+<div class="relative" data-carousel={id}>
+  <div
+    id={`${id}-track`}
+    class="snap-carousel photo-organic flex gap-2 overflow-x-auto"
+  >
+    {
+      images.map((img, i) => (
+        <div class="w-full shrink-0">
+          <Image
+            src={img}
+            alt={alts[i] ?? ""}
+            width={1200}
+            height={675}
+            class="h-72 w-full object-cover sm:h-[28rem]"
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  {
+    images.length > 1 && (
+      <>
+        <button
+          type="button"
+          data-carousel-prev={id}
+          aria-label="Anterior"
+          class="absolute left-2 top-1/2 -translate-y-1/2 rounded-full h-11 w-11 bg-forest/70 text-2xl text-white hover:bg-forest"
+        >
+          ‹
+        </button>
+        <button
+          type="button"
+          data-carousel-next={id}
+          aria-label="Siguiente"
+          class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full h-11 w-11 bg-forest/70 text-2xl text-white hover:bg-forest"
+        >
+          ›
+        </button>
+      </>
+    )
+  }
+</div>
+
+<script>
+  // Carrusel nativo: scroll-snap de CSS + botones prev/next en JS vanilla.
+  function initCarousels() {
+    document.querySelectorAll("[data-carousel]").forEach((root) => {
+      const id = root.getAttribute("data-carousel");
+      const track = document.getElementById(`${id}-track`);
+      if (!track) return;
+
+      const scrollByOne = (dir: 1 | -1) => {
+        const slideWidth = track.clientWidth;
+        track.scrollBy({ left: dir * slideWidth, behavior: "smooth" });
+      };
+
+      document
+        .querySelector(`[data-carousel-prev="${id}"]`)
+        ?.addEventListener("click", () => scrollByOne(-1));
+      document
+        .querySelector(`[data-carousel-next="${id}"]`)
+        ?.addEventListener("click", () => scrollByOne(1));
+    });
+  }
+  initCarousels();
+</script>

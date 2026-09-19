@@ -1,0 +1,38 @@
+---
+import { GTM_ID } from "@/consts";
+---
+
+{/* Consent Mode v2: default denegado (o "granted" si ya había una decisión
+   guardada) — se define ANTES de cargar el contenedor de GTM, en el mismo
+   script, para que ningún tag dispare antes del consentimiento. */}
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  var storedConsent = null;
+  try {
+    storedConsent = localStorage.getItem("edenva-cookie-consent");
+  } catch (e) {}
+  var granted = storedConsent === "granted";
+  gtag("consent", "default", {
+    ad_storage: granted ? "granted" : "denied",
+    ad_user_data: granted ? "granted" : "denied",
+    ad_personalization: granted ? "granted" : "denied",
+    analytics_storage: granted ? "granted" : "denied",
+    wait_for_update: 500,
+  });
+</script>
+
+<script define:vars={{ GTM_ID }} is:inline>
+  (function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != "dataLayer" ? "&l=" + l : "";
+    j.async = true;
+    j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, "script", "dataLayer", GTM_ID);
+</script>

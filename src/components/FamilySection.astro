@@ -1,0 +1,64 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { CONTACT } from "@/consts";
+
+interface Card {
+  title: string;
+  badge?: string;
+  text: string;
+  kidLabel: string;
+  kidPrice: string;
+  href: string;
+  image: ImageMetadata;
+  alt: string;
+}
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  cards: Card[];
+  note: string;
+  ask: string;
+}
+const { eyebrow, title, lead, cards, note, ask } = Astro.props;
+---
+
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
+  <div class="reveal max-w-2xl">
+    <p class="eyebrow">{eyebrow}</p>
+    <h2 class="display-lg mt-2 text-forest">{title}</h2>
+    <p class="mt-4 text-lg text-muted-foreground">{lead}</p>
+  </div>
+
+  <div class="mt-10 grid gap-6 md:grid-cols-2">
+    {
+      cards.map((c, i) => (
+        <a
+          href={c.href}
+          class:list={["reveal zoom-hover flex flex-col overflow-hidden rounded-[var(--radius-card)] bg-white shadow-card", i === 1 && "md:mt-10"]}
+          style={`--d:${i * 100}ms`}
+        >
+          <div class="aspect-[16/10] overflow-hidden">
+            <Image src={c.image} alt={c.alt} widths={[500, 800, 1100]} sizes="(min-width: 768px) 50vw, 100vw" loading="lazy" class="h-full w-full object-cover" />
+          </div>
+          <div class="flex flex-1 flex-col p-6">
+            <div class="flex flex-wrap items-center gap-3">
+              <h3 class="text-2xl font-extrabold uppercase text-forest">{c.title}</h3>
+              {c.badge && <span class="rounded-full bg-accent px-3 py-1 text-sm font-extrabold text-white">{c.badge}</span>}
+            </div>
+            <p class="mt-2 text-muted-foreground">{c.text}</p>
+            <p class="mt-4 font-display text-lg font-bold text-forest">
+              {c.kidLabel}: <span class="text-accent">{c.kidPrice}</span>
+            </p>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+
+  <p class="reveal mt-8 text-center text-muted-foreground">
+    {note}
+    <a href={CONTACT.whatsappHref} class="font-bold text-forest underline underline-offset-4 hover:text-accent">{ask}</a>
+  </p>
+</section>

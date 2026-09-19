@@ -1,0 +1,80 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import { getImage, Image } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import BookingCTA from "@/components/BookingCTA.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import { BLOG_CATEGORY_LABELS } from "@/content/blogCategories";
+import { BLOG_SLUGS } from "@/data/slugMaps";
+import { useTranslations, useRoutes, type Lang } from "@/i18n/utils";
+
+interface Props {
+  lang: Lang;
+  entry: CollectionEntry<"blog">;
+  folder: keyof typeof BLOG_SLUGS;
+}
+const { lang, entry, folder } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+const t = useTranslations(lang);
+const routes = useRoutes(lang);
+
+const urlSlug = BLOG_SLUGS[folder][lang];
+const canonicalPath = `${routes.blog}${urlSlug}/`;
+const altLang: Lang = lang === "es" ? "en" : "es";
+const altRoutes = useRoutes(altLang);
+const alternateHref = `${altRoutes.blog}${BLOG_SLUGS[folder][altLang]}/`;
+
+const ogImageSrc = data.seo.og_image ?? (await getImage({ src: data.cover, width: 1200, height: 630 })).src;
+---
+
+<BaseLayout
+  lang={lang}
+  title={data.seo.meta_title}
+  description={data.seo.meta_description}
+  canonicalPath={canonicalPath}
+  ogImage={typeof ogImageSrc === "string" ? ogImageSrc : ogImageSrc.src}
+  noindex={data.seo.noindex}
+  alternates={{ [lang]: canonicalPath, [altLang]: alternateHref } as Record<Lang, string>}
+  langSwitchHref={alternateHref}
+  activeKey="blog"
+  hideStickyBook
+>
+  <Breadcrumbs
+    lang={lang}
+    trail={[
+      { label: t("nav.blog"), href: routes.blog },
+      { label: data.titulo, href: canonicalPath },
+    ]}
+  />
+
+  <PageHero image={data.cover} alt={data.titulo} eyebrow={BLOG_CATEGORY_LABELS[data.categoria][lang]} title={data.h1} />
+
+  <article class="mx-auto max-w-3xl px-4 py-14 sm:py-20">
+    <div class="prose prose-edenva max-w-none text-lg">
+      <Content />
+    </div>
+
+    {
+      data.galeria.length > 0 && (
+        <div class="mt-8">
+          <h2 class="text-3xl font-extrabold uppercase text-forest">{t("tour.gallery")}</h2>
+          <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {data.galeria.map((img, i) => (
+              <Image
+                src={img}
+                alt={`${data.titulo} ${i + 1}`}
+                width={400}
+                height={300}
+                class="h-32 w-full rounded-2xl object-cover sm:h-40"
+              />
+            ))}
+          </div>
+        </div>
+      )
+    }
+    <BookingCTA label={t("cta.bookAdventure")} class="mt-10" />
+  </article>
+</BaseLayout>

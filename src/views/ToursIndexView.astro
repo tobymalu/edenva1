@@ -1,0 +1,76 @@
+---
+import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import PageHero from "@/components/PageHero.astro";
+import TourCard from "@/components/TourCard.astro";
+import PartnerLogos from "@/components/PartnerLogos.astro";
+import { TOUR_SLUGS } from "@/data/slugMaps";
+import { useTranslations, useRoutes, type Lang } from "@/i18n/utils";
+import toursHero from "@/assets/site/tours-parque.jpg";
+import heroCanopy from "@/assets/site/hero-canopy.jpg";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const routes = useRoutes(lang);
+
+const allTours = await getCollection("tours", (entry) => entry.data.lang === lang);
+const tours = allTours.sort((a, b) => a.data.orden - b.data.orden);
+
+const money = (n: number, cur: string) => `$${new Intl.NumberFormat(lang === "es" ? "es-MX" : "en-US").format(n)} ${cur}`;
+const ogImage = await getImage({ src: toursHero, width: 1200, height: 630 });
+
+const meta =
+  lang === "es"
+    ? {
+        title: "Tours en Edenva | Canopy y Naturaleza en Puerto Vallarta",
+        description:
+          "Explora nuestros tours en Edenva: tirolesas llenas de adrenalina y paseos relajantes en nuestro parque natural. ¡Reserva ahora!",
+      }
+    : {
+        title: "Tours at Edenva | Canopy and Nature in Puerto Vallarta",
+        description:
+          "Explore our tours at Edenva: adrenaline-filled ziplines and relaxing walks through our natural park. Book now!",
+      };
+---
+
+<BaseLayout
+  lang={lang}
+  title={meta.title}
+  description={meta.description}
+  canonicalPath={routes.tours}
+  ogImage={ogImage.src}
+  alternates={{ es: "/tours/", en: "/en/tours/" }}
+  langSwitchHref={lang === "es" ? "/en/tours/" : "/tours/"}
+  activeKey="tours"
+>
+  <Breadcrumbs lang={lang} trail={[{ label: t("nav.tours"), href: routes.tours }]} />
+
+  <PageHero
+    image={heroCanopy}
+    eyebrow={lang === "es" ? "Elige tu aventura" : "Pick your adventure"}
+    title={t("tours.pageTitle")}
+    lead={t("tours.pageIntro")}
+  />
+
+  <section class="mx-auto grid max-w-6xl gap-6 px-4 py-14 sm:grid-cols-2 sm:px-6 sm:py-20">
+    {
+      tours.map((tour) => (
+        <TourCard
+          lang={lang}
+          href={`${routes.tours}${TOUR_SLUGS[tour.id.split("/")[0]][lang]}/`}
+          nombre={tour.data.nombre}
+          descripcion={tour.data.descripcion}
+          cover={tour.data.cover}
+          price={tour.data.precios[0] ? money(tour.data.precios[0].precio, tour.data.precios[0].moneda) : undefined}
+        />
+      ))
+    }
+  </section>
+
+  <PartnerLogos lang={lang} />
+</BaseLayout>

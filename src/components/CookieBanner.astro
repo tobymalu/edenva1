@@ -1,0 +1,101 @@
+---
+import { useTranslations, type Lang } from "@/i18n/utils";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div
+  id="cookie-banner"
+  class="fixed inset-x-0 bottom-0 z-50 hidden border-t border-border bg-surface px-4 py-4 shadow-[0_-4px_12px_rgba(0,0,0,0.12)] sm:px-6"
+  role="dialog"
+  aria-live="polite"
+  aria-label="Cookies"
+>
+  <div class="mx-auto flex max-w-5xl flex-col items-center gap-3 sm:flex-row sm:justify-between">
+    <p class="text-sm text-foreground">{t("cookie.message")}</p>
+    <div class="flex w-full shrink-0 gap-3 sm:w-auto">
+      <button
+        id="cookie-reject"
+        type="button"
+        class="flex-1 rounded-md border border-border px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted sm:flex-none"
+      >
+        {t("cookie.reject")}
+      </button>
+      <button
+        id="cookie-accept"
+        type="button"
+        class="flex-1 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:bg-primary-dark sm:flex-none"
+      >
+        {t("cookie.accept")}
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // El banner mide su propia altura y se la pasa a la barra sticky de reserva
+  // (--sticky-offset) para que no se encimen en móvil, sin importar cuál se
+  // agregue o quite primero.
+  const STORAGE_KEY = "edenva-cookie-consent";
+  const banner = document.getElementById("cookie-banner");
+
+  function updateStickyOffset() {
+    if (!banner) return;
+    const isVisible = !banner.classList.contains("hidden");
+    const height = isVisible ? banner.getBoundingClientRect().height : 0;
+    document.documentElement.style.setProperty("--sticky-offset", `${height}px`);
+  }
+
+  function hideBanner() {
+    banner?.classList.add("hidden");
+    updateStickyOffset();
+  }
+
+  function grantConsent() {
+    try {
+      localStorage.setItem(STORAGE_KEY, "granted");
+    } catch (e) {}
+    // @ts-ignore — gtag viene del snippet de Analytics.astro
+    window.gtag?.("consent", "update", {
+      ad_storage: "granted",
+      ad_user_data: "granted",
+      ad_personalization: "granted",
+      analytics_storage: "granted",
+    });
+    // @ts-ignore — viene de MetaPixel.astro
+    window.edenvaStartMetaPixel?.();
+    hideBanner();
+  }
+
+  function rejectConsent() {
+    try {
+      localStorage.setItem(STORAGE_KEY, "denied");
+    } catch (e) {}
+    // @ts-ignore
+    window.gtag?.("consent", "update", {
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "denied",
+    });
+    hideBanner();
+  }
+
+  document.getElementById("cookie-accept")?.addEventListener("click", grantConsent);
+  document.getElementById("cookie-reject")?.addEventListener("click", rejectConsent);
+
+  let existingConsent: string | null = null;
+  try {
+    existingConsent = localStorage.getItem(STORAGE_KEY);
+  } catch (e) {}
+
+  if (!existingConsent && banner) {
+    banner.classList.remove("hidden");
+    updateStickyOffset();
+    window.addEventListener("resize", updateStickyOffset);
+  }
+</script>

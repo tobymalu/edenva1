@@ -1,0 +1,31 @@
+---
+// Botón de reserva único: abre el widget de FareHarbor y, sin JS, cae al link normal.
+import { FAREHARBOR_SHORTNAME } from "@/consts";
+
+interface Props {
+  label: string;
+  /** texto corto para pantallas muy angostas */
+  shortLabel?: string;
+  itemId?: string;
+  flow?: string;
+  variant?: "primary" | "ghost" | "outline";
+  class?: string;
+}
+const { label, shortLabel, itemId, flow, variant = "primary", class: className } = Astro.props;
+
+const href = itemId
+  ? `https://fareharbor.com/embeds/book/${FAREHARBOR_SHORTNAME}/items/${itemId}/?full-items=yes${flow ? `&flow=${flow}` : ""}`
+  : `https://fareharbor.com/embeds/book/${FAREHARBOR_SHORTNAME}/?full-items=yes`;
+
+const fhArgs = itemId
+  ? `{ shortname: '${FAREHARBOR_SHORTNAME}', fallback: 'simple', fullItems: 'yes'${flow ? `, flow: ${flow}` : ""}, view: { item: ${itemId} } }`
+  : `{ shortname: '${FAREHARBOR_SHORTNAME}', fallback: 'simple', fullItems: 'yes', view: 'items' }`;
+---
+
+<a
+  href={href}
+  onclick={`return !(window.FH && FH.open(${fhArgs}));`}
+  class:list={["btn", `btn-${variant}`, className]}
+>
+  {shortLabel ? <><span class="sm:hidden">{shortLabel}</span><span class="hidden sm:inline">{label}</span></> : label}
+</a>

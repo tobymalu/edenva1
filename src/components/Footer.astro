@@ -1,0 +1,76 @@
+---
+import { Image } from "astro:assets";
+import logo from "@/assets/site/logo.png";
+import { CONTACT, SOCIAL } from "@/consts";
+import { useTranslations, useRoutes, type Lang } from "@/i18n/utils";
+import { TOUR_SLUGS } from "@/data/slugMaps";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const routes = useRoutes(lang);
+const year = new Date().getFullYear();
+const es = lang === "es";
+
+const nav = [
+  { label: es ? "Experiencias" : "Experiences", href: `${routes.home}#experiencias` },
+  { label: es ? "Tirolesa" : "Zipline", href: `${routes.tours}${TOUR_SLUGS["tirolesa"][lang]}/` },
+  { label: es ? "Parque" : "Park", href: `${routes.tours}${TOUR_SLUGS["pase-parque"][lang]}/` },
+  { label: t("nav.about"), href: routes.about },
+  { label: t("nav.contact"), href: routes.contact },
+  { label: t("nav.faq"), href: routes.faq },
+];
+const social = [
+  { label: "Instagram", href: SOCIAL.instagram },
+  { label: "Facebook", href: SOCIAL.facebook },
+  { label: "YouTube", href: SOCIAL.youtube },
+  { label: "TripAdvisor", href: SOCIAL.tripadvisor },
+];
+---
+
+<footer class="wave-top relative mt-0 bg-forest pt-16 text-white" style="--wave-color: var(--color-cream)">
+  <div class="mx-auto grid max-w-7xl gap-10 px-4 pb-10 pt-6 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <div>
+      <a href={routes.home} class="flex items-center gap-3">
+        <Image src={logo} alt="" width={56} height={56} class="rounded-full bg-white" />
+        <span class="font-display text-3xl font-extrabold uppercase">Edenva</span>
+      </a>
+      <p class="mt-4 font-semibold tracking-wide text-sand">Adventure • Nature • Puerto Vallarta</p>
+    </div>
+
+    <nav aria-label={es ? "Navegación del pie" : "Footer navigation"}>
+      <h2 class="font-display text-sm uppercase tracking-widest text-accent-glow">{es ? "Explora" : "Explore"}</h2>
+      <ul class="mt-3 space-y-2">
+        {nav.map((n) => <li><a href={n.href} class="hover:underline">{n.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div>
+      <h2 class="font-display text-sm uppercase tracking-widest text-accent-glow">{t("footer.followUs")}</h2>
+      <ul class="mt-3 space-y-2">
+        {social.map((s) => <li><a href={s.href} target="_blank" rel="noopener noreferrer" class="hover:underline">{s.label}</a></li>)}
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-display text-sm uppercase tracking-widest text-accent-glow">{es ? "Escríbenos" : "Get in touch"}</h2>
+      <ul class="mt-3 space-y-2">
+        <li><a href={CONTACT.whatsappHref} class="font-semibold hover:underline">WhatsApp · 322 147 3221</a></li>
+        <li><a href={`mailto:${CONTACT.email}`} class="hover:underline">{CONTACT.email}</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white/15">
+    <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 text-sm text-white/80 sm:flex-row sm:justify-between sm:px-6">
+      <p>© {year} Edenva. {t("footer.copyright")}</p>
+      <ul class="flex flex-wrap gap-x-5 gap-y-1">
+        <li><a href={routes.terms} class="hover:underline">{es ? "Términos y condiciones" : "Terms & conditions"}</a></li>
+        <li><a href={routes.privacy} class="hover:underline">{es ? "Aviso de Privacidad" : "Privacy Notice"}</a></li>
+        <li><a href={routes.cancellation} class="hover:underline">{es ? "Política de Cancelación" : "Cancellation Policy"}</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,29 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  items: { title: string; text: string }[];
+}
+const { eyebrow, title, lead, items } = Astro.props;
+---
+
+<section class="wave-top relative bg-jungle px-4 pb-16 pt-20 text-white sm:px-6 sm:pb-24 sm:pt-28" style="--wave-color: var(--color-cream)">
+  <div class="mx-auto max-w-7xl">
+    <div class="reveal max-w-2xl">
+      <p class="eyebrow" style="color:var(--color-sand)">{eyebrow}</p>
+      <h2 class="display-lg mt-2">{title}</h2>
+      <p class="mt-4 text-lg text-white/90">{lead}</p>
+    </div>
+    <ul class="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        items.map((it, i) => (
+          <li class="reveal border-t-2 border-white/40 pt-4" style={`--d:${i * 80}ms`}>
+            <h3 class="text-xl font-extrabold">{it.title}</h3>
+            <p class="mt-2 text-white/90">{it.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

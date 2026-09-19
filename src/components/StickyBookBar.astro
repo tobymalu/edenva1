@@ -1,0 +1,33 @@
+---
+import { FAREHARBOR_SHORTNAME } from "@/consts";
+import { useTranslations, type Lang } from "@/i18n/utils";
+
+interface Props {
+  lang: Lang;
+  itemId?: string;
+  flow?: string;
+}
+const { lang, itemId, flow } = Astro.props;
+const t = useTranslations(lang);
+
+const bookHref = itemId
+  ? `https://fareharbor.com/embeds/book/${FAREHARBOR_SHORTNAME}/items/${itemId}/?full-items=yes${flow ? `&flow=${flow}` : ""}`
+  : `https://fareharbor.com/embeds/book/${FAREHARBOR_SHORTNAME}/?full-items=yes`;
+
+const fhOpenArgs = itemId
+  ? `{ shortname: '${FAREHARBOR_SHORTNAME}', fallback: 'simple', fullItems: 'yes'${flow ? `, flow: ${flow}` : ""}, view: { item: ${itemId} } }`
+  : `{ shortname: '${FAREHARBOR_SHORTNAME}', fallback: 'simple', fullItems: 'yes', view: 'items' }`;
+---
+
+<!-- El CTA del header ya es fijo en todas las pantallas; este componente conserva el script de FareHarbor. -->
+<a
+  id="sticky-book-bar"
+  href={bookHref}
+  onclick={`return !(window.FH && FH.open(${fhOpenArgs}));`}
+  class="hidden"
+  style="bottom: calc(1.25rem + var(--sticky-offset, 0px));"
+>
+  {t("cta.bookAdventure")}
+</a>
+
+<script src="https://fareharbor.com/embeds/api/v1/?autolightframe=yes" is:inline></script>

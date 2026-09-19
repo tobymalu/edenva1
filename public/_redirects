@@ -1,0 +1,19 @@
+# 301 reales para Cloudflare Pages — la opción `redirects` de Astro en modo
+# estático solo genera un meta-refresh del lado del cliente, no un 301 real.
+# Mapa de URLs viejas (mayúsculas mezcladas) -> nuevas (kebab-case).
+
+# Español
+/Blog/                          /blog/                         301
+/Blog/Restaurante/              /blog/restaurante/             301
+/Blog/Instalaciones/            /blog/instalaciones/           301
+/FAQ/                           /faq/                          301
+/tours/Tirolesa/                /tours/tirolesa/                301
+/tours/PaseParqueEdenva/        /tours/pase-parque/            301
+/TyC                            /terminos/                     301
+
+# Inglés
+/en/Blog/                       /en/blog/                      301
+/en/Blog/Restaurant/            /en/blog/restaurant/           301
+/en/Blog/Facilities/            /en/blog/facilities/           301
+/en/FAQ/                        /en/faq/                       301
+/en/tours/EdenvaPass/           /en/tours/edenva-pass/         301

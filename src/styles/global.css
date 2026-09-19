@@ -1,0 +1,226 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@import "./tokens.css";
+
+/*
+  Los tokens semánticos que ya usan las páginas internas (bg-primary,
+  text-accent, etc.) ahora apuntan a la paleta de tokens.css.
+*/
+@theme inline {
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+
+  --color-jungle: var(--color-jungle);
+  --color-forest: var(--color-forest);
+  --color-leaf: var(--color-leaf);
+  --color-river: var(--color-river);
+  --color-sand: var(--color-sand);
+  --color-earth: var(--color-earth);
+  --color-cream: var(--color-cream);
+  --color-dark: var(--color-dark);
+  --color-accent-deep: var(--color-accent-deep);
+  --color-accent-glow: var(--color-accent-glow);
+
+  --color-primary: var(--color-forest);
+  --color-primary-dark: var(--color-dark);
+  --color-primary-foreground: #ffffff;
+
+  --color-accent: var(--color-accent);
+  --color-accent-dark: var(--color-accent-deep);
+  --color-accent-foreground: #ffffff;
+
+  --color-secondary: var(--color-jungle);
+  --color-secondary-foreground: #ffffff;
+
+  --color-background: var(--color-cream);
+  --color-surface: #ffffff;
+  --color-foreground: var(--color-dark);
+  --color-muted: var(--color-sand);
+  --color-muted-foreground: #62594a;
+  --color-border: #e2d6ba;
+
+  --radius-card: var(--radius-card);
+  --shadow-card: var(--shadow-card);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-accent-glow);
+  outline-offset: 3px;
+}
+
+/* Carrusel nativo: scroll-snap + botones prev/next en JS vanilla (sin librería) */
+.snap-carousel {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.snap-carousel > * {
+  scroll-snap-align: start;
+}
+
+.snap-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.snap-carousel {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* prose con tokens de marca en vez de gris genérico, para las páginas legales */
+.prose-edenva {
+  --tw-prose-body: var(--color-foreground);
+  --tw-prose-headings: var(--color-foreground);
+  --tw-prose-links: var(--color-primary);
+  --tw-prose-bold: var(--color-foreground);
+  --tw-prose-bullets: var(--color-accent);
+  --tw-prose-hr: var(--color-border);
+  --tw-prose-quotes: var(--color-foreground);
+  --tw-prose-quote-borders: var(--color-accent);
+}
+
+/* ---------- Componentes de marca ---------- */
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.display-xl {
+  font-size: clamp(2.6rem, 9vw, 6rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.95;
+}
+
+.display-lg {
+  font-size: clamp(2rem, 6vw, 3.75rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3.25rem;
+  padding: 0.8rem 1.75rem;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn-primary {
+  background: var(--color-accent);
+  color: #fff;
+  box-shadow: 0 8px 20px -8px var(--color-accent);
+}
+.btn-primary:hover {
+  background: var(--color-accent-deep);
+}
+.btn-ghost {
+  border: 2px solid rgb(255 255 255 / 0.85);
+  color: #fff;
+}
+.btn-ghost:hover {
+  background: rgb(255 255 255 / 0.14);
+}
+.btn-outline {
+  border: 2px solid var(--color-forest);
+  color: var(--color-forest);
+}
+.btn-outline:hover {
+  background: var(--color-forest);
+  color: #fff;
+}
+
+/* Foto con esquinas orgánicas (no todas iguales) */
+.photo-organic {
+  border-radius: 2.5rem 0.75rem 2.5rem 0.75rem;
+  overflow: hidden;
+}
+.photo-organic-alt {
+  border-radius: 0.75rem 2.5rem 0.75rem 2.5rem;
+  overflow: hidden;
+}
+
+/* Divisor orgánico en curva entre secciones */
+.wave-top {
+  position: relative;
+}
+.wave-top::before {
+  content: "";
+  position: absolute;
+  inset: -1px 0 auto 0;
+  height: clamp(28px, 5vw, 64px);
+  background: var(--wave-color, var(--color-cream));
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60' preserveAspectRatio='none'%3E%3Cpath d='M0 0h1200v18c-90 26-180 30-300 14S690 6 560 22 300 58 160 46 60 24 0 34z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60' preserveAspectRatio='none'%3E%3Cpath d='M0 0h1200v18c-90 26-180 30-300 14S690 6 560 22 300 58 160 46 60 24 0 34z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Revelado al hacer scroll: solo si hay JS y el usuario no pidió menos movimiento */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: var(--d, 0ms);
+  }
+  .reveal.is-in {
+    opacity: 1;
+    transform: none;
+  }
+  .zoom-hover img {
+    transition: transform 0.8s ease;
+  }
+  .zoom-hover:hover img {
+    transform: scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .btn:hover {
+    transform: none;
+  }
+}
